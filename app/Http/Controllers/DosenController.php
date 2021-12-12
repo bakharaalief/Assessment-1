@@ -2,103 +2,72 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Dosen;
+use App\Models\Jadwal;
+use App\Models\User;
+use Facade\FlareClient\View;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
+use Illuminate\Support\Facades\Auth;
 
 class DosenController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        $data = Dosen::all();
-        return View('dosen.index')->with('data', $data);
+        $userId = Auth::user()->id;
+        $data = Jadwal::where('dosen_id', $userId)->get();
+        return View('dosen-home')->with(compact('data'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function updateStatus($id, Request $request)
     {
-        return View('dosen.create');
+        $cekAda =  Jadwal::where('id', $id)->first();
+
+        if (isset($cekAda)) {
+            Jadwal::where('id', $id)->update([
+                'status' => $request['status']
+            ]);
+
+            return redirect(route('dosen.index'))
+                ->with(['success' => 'Jadwal Berhasil Diupdate']);
+        } else {
+            return redirect(route('dosen.index'))
+                ->with(['failed' => 'Jadwal Tidak Ditemukan']);
+        }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function showJadwal($id)
     {
-        Dosen::create([
-            'nama' =>  $request['nama'],
-            'nidn' => $request['nidn'],
-            'alamat' => $request['alamat'],
-            'kontak' => $request['kontak']
-        ]);
-
-        return redirect(route('dosen.index'))->with(['success' => 'Dosen Berhasil Di Buat']);
+        $jadwal =  Jadwal::findOrFail($id);
+        return view('jadwal.show')->with(compact('jadwal'));
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function profile()
     {
-        $dosen = Dosen::findOrFail($id);
-        return view('dosen.show')->with('dosen', $dosen);
+        return view('user.user-profile');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function editProfile()
     {
-        $dosen = Dosen::findOrFail($id);
-        return view('dosen.edit')->with('dosen', $dosen);
+        return view('user.edit-profile');
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function updateProfile(Request $request)
     {
-        Dosen::where('id', $id)->update([
-            'nama' =>  $request['nama'],
-            'nidn' => $request['nidn'],
-            'alamat' => $request['alamat'],
-            'kontak' => $request['kontak']
-        ]);
+        $userId = Auth::user()->id;
+        $cekAda = User::where('id', $userId)->first();
 
-        return redirect(route('dosen.index'))->with(['success' => 'Dosen Berhasil Di Update']);
-    }
+        if (isset($cekAda)) {
+            User::where('id', $userId)->update([
+                'name' => $request['name'],
+                'alamat' => $request['alamat'],
+                'tahun_masuk' => $request['tahun_masuk'],
+                'kontak' => $request['kontak']
+            ]);
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        Dosen::destroy($id);
-        return redirect(route('dosen.index'))->with(['success' => 'Dosen berhasil di Delete']);
+            return redirect(route('dosen.profile'))
+                ->with(['success' => 'User Berhasil Diupdate']);
+        } else {
+            return redirect(route('dosen.profile'))
+                ->with(['failed' => 'User Tidak Ditemukan']);
+        }
     }
 }

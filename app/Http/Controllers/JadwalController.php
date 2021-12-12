@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Dosen;
 use App\Models\Jadwal;
 use App\Models\Mahasiswa;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -76,8 +77,8 @@ class JadwalController extends Controller
      */
     public function edit($id)
     {
-        $dataMahasiswa = Mahasiswa::all();
-        $dataDosen = Dosen::all();
+        $dataMahasiswa = User::where('level', 'mahasiswa')->get();
+        $dataDosen = User::where('level', 'dosen')->get();
         $jadwal = Jadwal::findOrFail($id);
 
         return View('jadwal.edit')
@@ -102,6 +103,7 @@ class JadwalController extends Controller
             'deskripsi' => $request['deskripsi'],
             'awal' => $request['awal'],
             'akhir' => $request['akhir'],
+            'status' => $request['status']
         ]);
 
         return redirect(route('jadwal.index'))->with(['success' => 'Jadwal Berhasil Di Update']);

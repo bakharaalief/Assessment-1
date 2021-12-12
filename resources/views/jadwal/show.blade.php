@@ -18,13 +18,13 @@
     
     <div class="row justify-content-center" style="font-size: 15px">
         <p class="font-weight-bold mr-1 mb-0">Dosen :</p>
-        <p class="mb-0">{{ $jadwal->getDosen()->alamat }}<p>
+        <p class="mb-0">{{ $jadwal->getDosen()->name }}<p>
     </div>
 
     
     <div class="row justify-content-center" style="font-size: 15px">
         <p class="font-weight-bold mr-1 mb-0">Mahasiswa :</p>
-        <p class="mb-0">{{ $jadwal->getMahasiswa()->alamat }}<p>
+        <p class="mb-0">{{ $jadwal->getMahasiswa()->name }}<p>
     </div>
 
     <div class="row justify-content-center" style="font-size: 15px">
@@ -35,6 +35,11 @@
     <div class="row justify-content-center" style="font-size: 15px">
         <p class="font-weight-bold mr-1 mb-0">Jadwal Akhir :</p>
         <p class="mb-0">{{ $jadwal->akhir }}<p>
+    </div>
+
+    <div class="row justify-content-center" style="font-size: 15px">
+        <p class="font-weight-bold mr-1 mb-0">Status :</p>
+        <p class="mb-0">{{ $jadwal->status }}<p>
     </div>
 </div>
 @endsection

@@ -15,8 +15,15 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+
+            $table->String('NIM_NIDN');
             $table->string('name');
             $table->string('email')->unique();
+            $table->enum('level', ['admin', 'dosen', 'mahasiswa']);
+            $table->text('alamat');
+            $table->text('tahun_masuk');
+            $table->text('kontak');
+
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

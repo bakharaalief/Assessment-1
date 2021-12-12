@@ -5,30 +5,12 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">Update Jadwal</div>
+                <div class="card-header">Create Jadwal</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('jadwal.update', ['jadwal' => $jadwal->id]) }}">
-                        @csrf
+                    <form method="POST" action="{{ route('mahasiswa.update-jadwal', ['id' => $jadwal->id]) }}">
                         @method('PUT')
-
-                        <div class="form-group row">
-                            <label for="mahasiswa" class="col-md-4 col-form-label text-md-right">Mahasiswa</label>
-
-                            <div class="col-md-6">
-                                <select id="mahasiswa" type="text" class="form-control @error('mahasiswa') is-invalid @enderror" name="mahasiswa" required>
-                                    @foreach ($dataMahasiswa as $mahasiswa)
-                                        <option value="{{ $mahasiswa->id }}" @if($jadwal->mahasiswa_id == $mahasiswa->id) selected @endif>{{ $mahasiswa->NIM_NIDN }} - {{ $mahasiswa->name }} </option>
-                                    @endforeach
-                                </select>
-
-                                @error('mahasiswa')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
+                        @csrf
 
                         <div class="form-group row">
                             <label for="dosen" class="col-md-4 col-form-label text-md-right">Dosen</label>
@@ -113,35 +95,13 @@
                             <div class="col-md-6">
                                 <input 
                                     id="akhir" 
-                                    type="datetime-local" class="form-control @error('akhir') is-invalid @enderror" 
+                                    type="datetime-local" 
+                                    class="form-control @error('akhir') is-invalid @enderror" 
                                     name="akhir" 
                                     value="{{ date("Y-m-d\TH:i:s", strtotime($jadwal->akhir)) }}"
                                     required>
 
                                 @error('akhir')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="status" class="col-md-4 col-form-label text-md-right">Status</label>
-
-                            <div class="col-md-6">
-                                <select 
-                                    id="status" 
-                                    type="text" 
-                                    class="form-control @error('status') is-invalid @enderror" 
-                                    name="status" 
-                                    required>
-                                    <option value="terima" @if ($jadwal->status == 'terima') selected @endif>Terima</option>
-                                    <option value="tolak" @if ($jadwal->status == 'tolak') selected @endif>Tolak</option>
-                                    <option value="tunggu" @if ($jadwal->status == 'tunggu') selected @endif>Tunggu</option>
-                                </select>
-
-                                @error('status')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>

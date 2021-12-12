@@ -2,107 +2,112 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Mahasiswa;
+use App\Models\Jadwal;
+use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
+use Illuminate\Support\Facades\Auth;
 
 class MahasiswaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //get all data from db
-        $data = Mahasiswa::all();
-
-        return View('mahasiswa.index')->with('data', $data);
+        $userId = Auth::user()->id;
+        $data = Jadwal::where('mahasiswa_id', $userId)->get();
+        return View('mahasiswa-home')->with(compact('data'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function createJadwal()
     {
-        return view('mahasiswa.create');
+        $dataDosen = User::where('level', 'dosen')->get();
+        return View('jadwal.create-mahasiswa')->with(compact('dataDosen'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function storeJadwal(Request $request)
     {
-        Mahasiswa::create([
-            'nama' => $request['nama'],
-            'nim' => $request['nim'],
-            'tanggal_lahir' => $request['tanggal_lahir'],
-            'alamat' => $request['alamat'],
-            'tahun_masuk' => $request['tahun_masuk']
+        $idMahasiswa = Auth::user()->id;
+
+        Jadwal::create([
+            'mahasiswa_id' => $idMahasiswa,
+            'dosen_id' => $request['dosen'],
+            'judul' => $request['judul'],
+            'deskripsi' => $request['deskripsi'],
+            'awal' => $request['awal'],
+            'akhir' => $request['akhir'],
         ]);
 
-        return redirect(route('mahasiswa.index'))->with(['success' => 'Mahasiswa Berhasil Dibuat']);
+        return redirect(route('mahasiswa.index'))->with(['success' => 'Jadwal Berhasil Di Buat']);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function showJadwal($id)
     {
-        $mahasiswa = Mahasiswa::findOrFail($id);
-        return view('mahasiswa.show')->with('mahasiswa', $mahasiswa);
+        $jadwal =  Jadwal::findOrFail($id);
+        return view('jadwal.show')->with(compact('jadwal'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function editJadwal($id)
     {
-        $mahasiswa = Mahasiswa::findOrFail($id);
-        return view('mahasiswa.edit')->with('mahasiswa', $mahasiswa);
+        $dataDosen = User::where('level', 'dosen')->get();
+        $jadwal = Jadwal::findOrFail($id);
+        return view('jadwal.edit-mahasiswa')->with(compact('jadwal', 'dataDosen'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function updateJadwal($id, Request $request)
     {
-        Mahasiswa::where('id', $id)->update([
-            'nama' => $request['nama'],
-            'nim' => $request['nim'],
-            'tanggal_lahir' => $request['tanggal_lahir'],
-            'alamat' => $request['alamat'],
-            'tahun_masuk' => $request['tahun_masuk']
-        ]);
+        $idMahasiswa = Auth::user()->id;
+        $cekAda =  Jadwal::where('id', $id)->first();
 
-        return redirect(route('mahasiswa.index'))->with(['success' => 'Mahasiswa Berhasil Di Update']);
+        if (isset($cekAda)) {
+            Jadwal::where('id', $id)->update([
+                'mahasiswa_id' => $idMahasiswa,
+                'dosen_id' => $request['dosen'],
+                'judul' => $request['judul'],
+                'deskripsi' => $request['deskripsi'],
+                'awal' => $request['awal'],
+                'akhir' => $request['akhir'],
+            ]);
+
+            return redirect(route('mahasiswa.index'))
+                ->with(['success' => 'Jadwal Berhasil Diupdate']);
+        } else {
+            return redirect(route('mahasiswa.index'))
+                ->with(['failed' => 'Jadwal Tidak Ditemukan']);
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function destroyJadwal($id)
     {
-        Mahasiswa::destroy($id);
-        return redirect(route('mahasiswa.index'))->with(['success' => 'Mahasiswa Berhasil Di Delete']);
+        Jadwal::destroy($id);
+        return redirect(route('mahasiswa.index'))->with(['success' => 'Jadwal Berhasil Di Delete']);
+    }
+
+    public function profile()
+    {
+        return view('user.user-profile');
+    }
+
+    public function editProfile()
+    {
+        return view('user.edit-profile');
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $userId = Auth::user()->id;
+        $cekAda = User::where('id', $userId)->first();
+
+        if (isset($cekAda)) {
+            User::where('id', $userId)->update([
+                'name' => $request['name'],
+                'alamat' => $request['alamat'],
+                'tahun_masuk' => $request['tahun_masuk'],
+                'kontak' => $request['kontak']
+            ]);
+
+            return redirect(route('mahasiswa.profile'))
+                ->with(['success' => 'User Berhasil Diupdate']);
+        } else {
+            return redirect(route('mahasiswa.profile'))
+                ->with(['failed' => 'User Tidak Ditemukan']);
+        }
     }
 }

@@ -22,11 +22,11 @@ class Jadwal extends Model
 
     public function getMahasiswa()
     {
-        return Mahasiswa::find($this->mahasiswa_id);
+        return User::find($this->mahasiswa_id);
     }
 
     public function getDosen()
     {
-        return Dosen::find($this->dosen_id);
+        return User::find($this->dosen_id);
     }
 }
