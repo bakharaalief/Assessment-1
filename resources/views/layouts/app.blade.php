@@ -23,9 +23,28 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
+                
+                @guest
                 <a class="navbar-brand" href="{{ url('/') }}">
                     Sistem Appointment
                 </a>
+                @else
+
+                <a  class="navbar-brand" 
+
+                    @if (Auth::user()->level == 'dosen')
+                    href="{{ url('/dosen') }}"
+                    @elseif (Auth::user()->level == 'mahasiswa')
+                    href="{{ url('/mahasiswa') }}"
+                    @else
+                    href="{{ url('/admin') }}"
+                    @endif
+                    >
+                    Sistem Appointment
+                </a>
+
+                @endguest
+
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -39,11 +58,11 @@
                         @else
                         @if (Auth::user()->level == 'dosen')
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('dosen.index') }}">Jadwal</a>
+                            <a class="nav-link" href="{{ route('dosen.jadwal') }}">Jadwal</a>
                         </li>
                         @elseif (Auth::user()->level == 'mahasiswa')
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('mahasiswa.index') }}">Jadwal</a>
+                            <a class="nav-link" href="{{ route('mahasiswa.jadwal') }}">Jadwal</a>
                         </li>
                         @else
                         <li class="nav-item">
@@ -69,12 +88,6 @@
                                     <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
                                 </li>
                             @endif
-
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
-                            @endif
                         @else
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
@@ -89,7 +102,7 @@
                                         @elseif (Auth::user()->level == 'mahasiswa')
                                         href="{{ route('mahasiswa.profile') }}"
                                         @else
-                                        href="{{ route('dosen.index') }}"
+                                        href="{{ route('admin.profile') }}"
                                         @endif 
 
                                         >

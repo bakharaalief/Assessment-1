@@ -12,9 +12,14 @@ class DosenController extends Controller
 {
     public function index()
     {
+        return View('dosen-home');
+    }
+
+    public function jadwalIndex()
+    {
         $userId = Auth::user()->id;
         $data = Jadwal::where('dosen_id', $userId)->get();
-        return View('dosen-home')->with(compact('data'));
+        return View('dosen.index')->with(compact('data'));
     }
 
     public function updateStatus($id, Request $request)
@@ -26,10 +31,10 @@ class DosenController extends Controller
                 'status' => $request['status']
             ]);
 
-            return redirect(route('dosen.index'))
+            return redirect(route('dosen.jadwal'))
                 ->with(['success' => 'Jadwal Berhasil Diupdate']);
         } else {
-            return redirect(route('dosen.index'))
+            return redirect(route('dosen.jadwal'))
                 ->with(['failed' => 'Jadwal Tidak Ditemukan']);
         }
     }

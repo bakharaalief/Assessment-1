@@ -18,8 +18,13 @@ class User extends Authenticatable
      * @var string[]
      */
     protected $fillable = [
+        'NIM_NIDN',
         'name',
         'email',
+        'level',
+        'alamat',
+        'tahun_masuk',
+        'kontak',
         'password',
     ];
 

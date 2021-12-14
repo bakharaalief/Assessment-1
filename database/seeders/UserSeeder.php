@@ -27,39 +27,31 @@ class UserSeeder extends Seeder
         ]);
 
         //create dosen
-        User::create([
-            'NIM_NIDN' => '00000000002',
-            'name' => 'dosen 1',
-            'email' => 'dosen1@gmail.com',
-            'level' => 'dosen',
-            'alamat' => 'Jl.Pertama Blok F7 No.18',
-            'tahun_masuk' => '2020',
-            'kontak' => '0812345678',
-            'password' => bcrypt('12345678')
-        ]);
+        for ($i = 1; $i < 6; $i++) {
+            User::create([
+                'NIM_NIDN' => rand(10000000, 99999999),
+                'name' => 'dosen ' . $i,
+                'email' => 'dosen' . $i . '@gmail.com',
+                'level' => 'dosen',
+                'alamat' => 'Jl.Pertama Blok F7 No.18',
+                'tahun_masuk' => '2020',
+                'kontak' => '08123456788',
+                'password' => bcrypt('12345678')
+            ]);
+        }
 
         //create mahasiswa
-        User::create([
-            'NIM_NIDN' => '00000000003',
-            'name' => 'mahasiswa 1',
-            'email' => 'mahasiswa1@gmail.com',
-            'level' => 'mahasiswa',
-            'alamat' => 'Jl.Pertama Blok F7 No.18',
-            'tahun_masuk' => '2020',
-            'kontak' => '0812345678',
-            'password' => bcrypt('12345678')
-        ]);
-
-        //create dosen 
-        User::create([
-            'NIM_NIDN' => '00000000012',
-            'name' => 'dosen 2',
-            'email' => 'dosen2@gmail.com',
-            'level' => 'dosen',
-            'alamat' => 'Jl.Pertama Blok F7 No.18',
-            'tahun_masuk' => '2020',
-            'kontak' => '0812345678',
-            'password' => bcrypt('12345678')
-        ]);
+        for ($i = 1; $i < 6; $i++) {
+            User::create([
+                'NIM_NIDN' => rand(10000000, 99999999),
+                'name' => 'mahasiswa ' . $i,
+                'email' => 'mahasiswa' . $i . '@gmail.com',
+                'level' => 'mahasiswa',
+                'alamat' => 'Jl.Pertama Blok F7 No.18',
+                'tahun_masuk' => '2020',
+                'kontak' => '0812345678',
+                'password' => bcrypt('12345678')
+            ]);
+        }
     }
 }

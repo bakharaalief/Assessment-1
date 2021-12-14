@@ -5,19 +5,18 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">Update Profile</div>
+
+                @if ($type == 'dosen')
+                <div class="card-header">Buat Dosen</div>
+                @else
+                <div class="card-header">Buat Mahasiswa</div>
+                @endif
 
                 <div class="card-body">
-                    <form method="POST" 
-                        @if (Auth::user()->level == 'dosen')
-                        action="{{ route('dosen.update-profile') }}"
-                        @elseif(Auth::user()->level == 'mahasiswa')
-                        action="{{ route('mahasiswa.update-profile') }}"
-                        @else
-                        action="{{ route('admin.update-profile') }}"
-                        @endif>
-                        
-                        @method('PUT')
+                    <form 
+                        method="POST" 
+                        action="{{ route('admin.store-user', ['type'=>$type]) }}"
+                        >
                         @csrf
 
                         <div class="form-group row">
@@ -29,11 +28,31 @@
                                     type="text" 
                                     class="form-control @error('name') is-invalid @enderror" 
                                     name="name" 
-                                    value="{{ Auth::user()->name }}" 
+                                    placeholder="Masukkan Nama"
                                     required  
                                     autofocus>
 
                                 @error('name')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
+
+                            <div class="col-md-6">
+                                <input 
+                                    id="email" 
+                                    type="email" 
+                                    class="form-control @error('email') is-invalid @enderror" 
+                                    name="email" 
+                                    placeholder="Masukkan Email"
+                                    required autocomplete="email">
+
+                                @error('email')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -50,7 +69,8 @@
                                     id="alamat" 
                                     name='alamat' 
                                     rows="3" 
-                                    required>{{ Auth::user()->alamat }}</textarea>
+                                    placeholder="Masukkan Alamat"
+                                    required></textarea>
 
                                 @error('alamat')
                                     <span class="invalid-feedback" role="alert">
@@ -68,8 +88,8 @@
                                     id="tahun_masuk" 
                                     type="text" 
                                     class="form-control @error('tahun_masuk') is-invalid @enderror" 
-                                    name="tahun_masuk" 
-                                    value="{{ Auth::user()->tahun_masuk }}" 
+                                    name="tahun_masuk"  
+                                    placeholder="Masukkan Tahun Masuk"
                                     required 
                                     autofocus>
 
@@ -89,8 +109,8 @@
                                     id="kontak" 
                                     type="text" 
                                     class="form-control @error('kontak') is-invalid @enderror" 
-                                    name="kontak" 
-                                    value="{{ Auth::user()->kontak }}" 
+                                    name="kontak"  
+                                    placeholder="Masukkan Kontak"
                                     required 
                                     autofocus>
 
@@ -102,10 +122,30 @@
                             </div>
                         </div>
 
+                        <div class="form-group row">
+                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
+
+                            <div class="col-md-6">
+                                <input 
+                                    id="password" 
+                                    type="password" 
+                                    class="form-control @error('password') is-invalid @enderror" 
+                                    name="password" 
+                                    placeholder="Masukkan Password"
+                                    required autocomplete="new-password">
+
+                                @error('password')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
-                                    Update
+                                    Create
                                 </button>
                             </div>
                         </div>

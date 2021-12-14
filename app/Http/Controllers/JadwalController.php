@@ -29,8 +29,8 @@ class JadwalController extends Controller
      */
     public function create()
     {
-        $dataMahasiswa = Mahasiswa::all();
-        $dataDosen = Dosen::all();
+        $dataMahasiswa = User::where('level', 'mahasiswa')->get();
+        $dataDosen = User::where('level', 'dosen')->get();
 
         return View('jadwal.create')
             ->with('dataMahasiswa', $dataMahasiswa)

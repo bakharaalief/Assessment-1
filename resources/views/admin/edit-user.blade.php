@@ -8,14 +8,14 @@
                 <div class="card-header">Update Profile</div>
 
                 <div class="card-body">
-                    <form method="POST" 
-                        @if (Auth::user()->level == 'dosen')
-                        action="{{ route('dosen.update-profile') }}"
-                        @elseif(Auth::user()->level == 'mahasiswa')
-                        action="{{ route('mahasiswa.update-profile') }}"
+                    <form 
+                        method="POST" 
+                        @if ($data->level == 'dosen')
+                        action="{{ route('admin.update-user', ['type' => 'dosen', 'id' => $data->id]) }}"
                         @else
-                        action="{{ route('admin.update-profile') }}"
-                        @endif>
+                        action="{{ route('admin.update-user', ['type' => 'mahasiswa', 'id' => $data->id]) }}"
+                        @endif
+                        >
                         
                         @method('PUT')
                         @csrf
@@ -29,7 +29,7 @@
                                     type="text" 
                                     class="form-control @error('name') is-invalid @enderror" 
                                     name="name" 
-                                    value="{{ Auth::user()->name }}" 
+                                    value="{{ $data->name }}" 
                                     required  
                                     autofocus>
 
@@ -50,7 +50,7 @@
                                     id="alamat" 
                                     name='alamat' 
                                     rows="3" 
-                                    required>{{ Auth::user()->alamat }}</textarea>
+                                    required>{{ $data->alamat }}</textarea>
 
                                 @error('alamat')
                                     <span class="invalid-feedback" role="alert">
@@ -69,7 +69,7 @@
                                     type="text" 
                                     class="form-control @error('tahun_masuk') is-invalid @enderror" 
                                     name="tahun_masuk" 
-                                    value="{{ Auth::user()->tahun_masuk }}" 
+                                    value="{{ $data->tahun_masuk }}" 
                                     required 
                                     autofocus>
 
@@ -90,11 +90,33 @@
                                     type="text" 
                                     class="form-control @error('kontak') is-invalid @enderror" 
                                     name="kontak" 
-                                    value="{{ Auth::user()->kontak }}" 
+                                    value="{{ $data->kontak }}" 
                                     required 
                                     autofocus>
 
                                 @error('kontak')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="level" class="col-md-4 col-form-label text-md-right">Level</label>
+
+                            <div class="col-md-6">
+                                <select 
+                                    id="level" 
+                                    type="text" 
+                                    class="form-control @error('level') is-invalid @enderror" 
+                                    name="level" 
+                                    required>
+                                    <option value="dosen" @if ($data->level == 'dosen') selected @endif>Dosen</option>
+                                    <option value="mahasiswa" @if ($data->level == 'mahasiswa') selected @endif>Mahasiswa</option>
+                                </select>
+
+                                @error('level')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>

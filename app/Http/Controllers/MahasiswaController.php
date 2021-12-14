@@ -11,9 +11,14 @@ class MahasiswaController extends Controller
 {
     public function index()
     {
+        return View('mahasiswa-home');
+    }
+
+    public function jadwalIndex()
+    {
         $userId = Auth::user()->id;
         $data = Jadwal::where('mahasiswa_id', $userId)->get();
-        return View('mahasiswa-home')->with(compact('data'));
+        return View('mahasiswa.index')->with(compact('data'));
     }
 
     public function createJadwal()
@@ -35,7 +40,7 @@ class MahasiswaController extends Controller
             'akhir' => $request['akhir'],
         ]);
 
-        return redirect(route('mahasiswa.index'))->with(['success' => 'Jadwal Berhasil Di Buat']);
+        return redirect(route('mahasiswa.jadwal'))->with(['success' => 'Jadwal Berhasil Di Buat']);
     }
 
     public function showJadwal($id)
@@ -66,10 +71,10 @@ class MahasiswaController extends Controller
                 'akhir' => $request['akhir'],
             ]);
 
-            return redirect(route('mahasiswa.index'))
+            return redirect(route('mahasiswa.jadwal'))
                 ->with(['success' => 'Jadwal Berhasil Diupdate']);
         } else {
-            return redirect(route('mahasiswa.index'))
+            return redirect(route('mahasiswa.jadwal'))
                 ->with(['failed' => 'Jadwal Tidak Ditemukan']);
         }
     }
@@ -77,7 +82,7 @@ class MahasiswaController extends Controller
     public function destroyJadwal($id)
     {
         Jadwal::destroy($id);
-        return redirect(route('mahasiswa.index'))->with(['success' => 'Jadwal Berhasil Di Delete']);
+        return redirect(route('mahasiswa.jadwal'))->with(['success' => 'Jadwal Berhasil Di Delete']);
     }
 
     public function profile()

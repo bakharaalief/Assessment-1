@@ -17,6 +17,13 @@
       </div>
     @endif
 
+    @if ($message = Session::get('failed'))
+    <div class="alert alert-danger alert-block">
+      <button type="button" class="close" data-dismiss="alert">×</button>    
+        <strong>{{ $message }}</strong>
+    </div>
+    @endif
+
     <div class="row justify-content-center">
         <table class="table-sm table table-bordered text-center">
             <thead class="thead-dark">

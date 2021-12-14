@@ -12,10 +12,12 @@
 
             @if (Auth::user()->level == 'mahasiswa')
             href="{{ route('mahasiswa.edit-profile') }}"
-            @else
+            @elseif(Auth::user()->level == 'dosen')
             href="{{ route('dosen.edit-profile') }}"
+            @else
+            href="{{ route('admin.edit-profile') }}"
             @endif
-            >Update Profile</a>
+            >Edit Profile</a>
     </div>
 
     @if ($message = Session::get('success'))

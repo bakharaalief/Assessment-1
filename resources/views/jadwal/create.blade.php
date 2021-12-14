@@ -17,7 +17,7 @@
                             <div class="col-md-6">
                                 <select id="mahasiswa" type="text" class="form-control @error('mahasiswa') is-invalid @enderror" name="mahasiswa" required>
                                     @foreach ($dataMahasiswa as $mahasiswa)
-                                        <option value="{{ $mahasiswa->id }}">{{ $mahasiswa->nim }} - {{ $mahasiswa->nama }} </option>
+                                        <option value="{{ $mahasiswa->id }}">{{ $mahasiswa->NIM_NIDN }} - {{ $mahasiswa->name }} </option>
                                     @endforeach
                                 </select>
 
@@ -35,7 +35,7 @@
                             <div class="col-md-6">
                                 <select id="dosen" type="text" class="form-control @error('dosen') is-invalid @enderror" name="dosen" required>
                                     @foreach ($dataDosen as $dosen)
-                                        <option value="{{ $dosen->id }}">{{ $dosen->nidn }} - {{ $dosen->nama }} </option>
+                                        <option value="{{ $dosen->id }}">{{ $dosen->NIM_NIDN }} - {{ $dosen->name }} </option>
                                     @endforeach
                                 </select>
 
@@ -51,7 +51,13 @@
                             <label for="judul" class="col-md-4 col-form-label text-md-right">Judul Jadwal</label>
 
                             <div class="col-md-6">
-                                <input id="judul" type="text" class="form-control @error('judul') is-invalid @enderror" name="judul" required>
+                                <input 
+                                    id="judul" 
+                                    type="text" 
+                                    class="form-control @error('judul') is-invalid @enderror" 
+                                    name="judul" 
+                                    placeholder="Masukkan Jadwal"
+                                    required>
 
                                 @error('judul')
                                     <span class="invalid-feedback" role="alert">
@@ -65,7 +71,13 @@
                             <label for="deskripsi" class="col-md-4 col-form-label text-md-right">Deskripsi</label>
 
                             <div class="col-md-6">
-                                <textarea class="form-control @error('deskripsi') is-invalid @enderror" id="deskripsi" name='deskripsi' rows="3" required></textarea>
+                                <textarea 
+                                    class="form-control @error('deskripsi') is-invalid @enderror" 
+                                    id="deskripsi" 
+                                    name='deskripsi' 
+                                    rows="3" 
+                                    placeholder="Masukkan Deskripsi"
+                                    required></textarea>
 
                                 @error('deskripsi')
                                     <span class="invalid-feedback" role="alert">
