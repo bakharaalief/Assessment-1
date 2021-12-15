@@ -8,7 +8,7 @@
         >
         <div class="container">
           <h1 class="display-4 font-weight-bold">Sistem Appoinment</h1>
-          <p class="lead">Silahkan Pilih Menu diatas Sesuai Tujuanmu :)</p>
+          <p class="lead">Sistem Penjadwalan Pertemuan Mahasiswa dan Dosen :)</p>
         </div>
     </div>
 </div>
